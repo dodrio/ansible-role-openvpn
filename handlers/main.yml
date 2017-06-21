@@ -1,0 +1,10 @@
+---
+- name: restart openvpn-client
+  service:
+    name: openvpn-client@{{ openvpn_conf_name }}
+    state: restarted
+
+- name: restart openvpn-server
+  service:
+    name: openvpn-server@{{ openvpn_conf_name }}
+    state: restarted
