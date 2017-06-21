@@ -1,0 +1,51 @@
+---
+- name: set {{ openvpn_client_conf_path }}/{{ openvpn_conf_name }}.conf
+  template:
+    src: client.conf.j2
+    dest: '{{ openvpn_client_conf_path }}/{{ openvpn_conf_name }}.conf'
+    owner: openvpn
+    group: openvpn
+    mode: 0640
+  notify: restart openvpn-client
+
+- name: "client: ensure CA's cert is placed"
+  copy:
+    src: '{{ playbook_dir }}/files/openvpn/{{ openvpn_ca_cert }}'
+    dest: '{{ openvpn_client_conf_path }}/{{ openvpn_ca_cert }}'
+    owner: openvpn
+    group: openvpn
+    mode: 0640
+  notify: restart openvpn-client
+
+- name: "client: ensure TLS auth key is placed"
+  copy:
+    src: '{{ playbook_dir }}/files/openvpn/{{ openvpn_tls_auth_key }}'
+    dest: '{{ openvpn_client_conf_path }}/{{ openvpn_tls_auth_key }}'
+    owner: openvpn
+    group: openvpn
+    mode: 0640
+  notify: restart openvpn-client
+
+- name: "client: ensure cert is placed"
+  copy:
+    src: '{{ playbook_dir }}/files/openvpn/{{ openvpn_client_cert }}'
+    dest: '{{ openvpn_client_conf_path }}/{{ openvpn_client_cert }}'
+    owner: openvpn
+    group: openvpn
+    mode: 0640
+  notify: restart openvpn-client
+
+- name: "client: ensure key is placed"
+  copy:
+    src: '{{ playbook_dir }}/files/openvpn/{{ openvpn_client_key }}'
+    dest: '{{ openvpn_client_conf_path }}/{{ openvpn_client_key }}'
+    owner: openvpn
+    group: openvpn
+    mode: 0640
+  notify: restart openvpn-client
+
+- name: ensure openvpn-client@{{ openvpn_conf_name }} is running and enabled
+  service:
+    name: openvpn-client@{{ openvpn_conf_name }}
+    state: started
+    enabled: yes

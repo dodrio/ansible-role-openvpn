@@ -1,0 +1,16 @@
+---
+- name: ensure epel-release is installed
+  yum:
+    name: epel-release
+    state: present
+
+- name: ensure openvpn is installed
+  yum:
+    name: openvpn-{{ openvpn_version }}
+    state: present
+
+- include: client.yml
+  when: openvpn_type == 'client'
+
+- include: server.yml
+  when: openvpn_type == 'server'
