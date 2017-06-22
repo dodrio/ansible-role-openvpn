@@ -62,7 +62,7 @@ For Clients:
     - role: m31271n.openvpn
       openvpn_conf_name: 'my-openvpn'
       openvpn_server_port: '1194'
-      openvpn_type: client
+      openvpn_type: server
 ```
 
 ```
