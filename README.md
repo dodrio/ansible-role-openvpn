@@ -7,26 +7,74 @@ Ansible role that setups OpenVPN.
 
 ## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 ## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```
+openvpn_version: 2.4.2
+
+openvpn_type: '' # client or server
+
+openvpn_server_conf_path: /etc/openvpn/server
+openvpn_client_conf_path: /etc/openvpn/client
+openvpn_conf_name: default
+
+openvpn_ca_cert: ca.crt
+openvpn_tls_auth_key: ta.key
+
+openvpn_server_addr: 127.0.0.1
+openvpn_server_port: 1194
+openvpn_server_cert: server.crt
+openvpn_server_key: server.key
+openvpn_server_dh: dh2048.pem
+
+openvpn_client_cert: '{{ inventory_hostname }}.crt'
+openvpn_client_key: '{{ inventory_hostname }}.key'
+```
 
 ## Dependencies
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 ## Example Playbook
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Place OpenVPN related files in `{{ playbook_dir }}/files/openvpn`.
+
+General:
++ `ca.crt`
++ `ta.key`
+
+For Server:
+
++ `dh2048.pem`
++ `server.crt`
++ `server.key`
+
+For Clients:
+
++ `{{ inventory_hostname }}.crt`
++ `{{ inventory_hostname }}.key`
 
 ```
-- hosts: servers
+- hosts: server
   roles:
     - role: m31271n.openvpn
-      x: 42
+      openvpn_conf_name: 'my-openvpn'
+      openvpn_server_port: '1194'
+      openvpn_type: client
 ```
+
+```
+- hosts: clients
+  roles:
+    - role: m31271n.openvpn
+      openvpn_conf_name: 'my-openvpn'
+      openvpn_server_addr: '111.111.111.111'
+      openvpn_server_port: '1194'
+      openvpn_type: client
+```
+
 
 * * *
 
