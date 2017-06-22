@@ -2,7 +2,7 @@
 - name: ensure epel-release is installed
   yum:
     name: epel-release
-    state: present
+    state: latest
 
 - name: ensure openvpn is installed
   yum:
